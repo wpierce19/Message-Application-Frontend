@@ -17,6 +17,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Header user={user} setUser={setUser} setToken={setToken} />
       <Routes>
         <Route path="/" element={user ? <Navigate to="/messages" /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login setUser={setUser} setToken={setToken} />} />
