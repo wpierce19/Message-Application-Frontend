@@ -5,6 +5,8 @@ import './App.cs';
 import Login from './components/UserLogin';
 import Signup from './components/UserSignUp';
 import MessageList from './components/MessageList';
+import Messages from './components/Messages';
+import CreateMessage from './components/CreateMessage';
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -23,6 +25,8 @@ function App() {
         <Route path="/login" element={<Login setUser={setUser} setToken={setToken} />} />
         <Route path="/register" element={<Signup setUser={setUser} setToken={setToken} />} />
         <Route path="/messages" element={user ? <MessageList /> : <Navigate to="/login" />} />
+        <Route path="/messages/:id" element={<Messages user={user} />} />
+        <Route path="/messages/new" element={<CreateMessage user={user} />} />
       </Routes>
     </BrowserRouter>
   );
