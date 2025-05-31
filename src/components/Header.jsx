@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-const Header = ({user}) => {
+const Header = ({user, setUser, setToken}) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null); //reference to dropdown area
 
     const handleLogout = () => {
-        //Add logout logic here
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("user");
+        setUser(null);
+        setToken(null);
         console.log("User Logged out");
     };
 
-    const toggleMenu = () => setMenuOpen(prev => !prev);
     const avatarSrc = user?.avatarUrl || "../assets/default-avatar.png";
 
     useEffect(() => {
@@ -26,12 +28,20 @@ const Header = ({user}) => {
 
   return (
     <header
-      className="fixed top-0 left-0 z-50 w-full text-white py-3 px-6 flex items-center justify-between"
+      className="fixed top-0 left-0 z-50 w-full text-white py-3 px-6 flex items-center justify-end"
       style={{ backgroundColor: "red" }}
     >
-      {/* Avatar & Dropdown */}
-      <div className="relative" ref={menuRef}>
-        <button onClick={toggleMenu} className="flex items-center focus:outline-none">
+      <nav className="flex items-center gap-6 text-lg font-semibold mr-4">
+        <Link to="/">Home</Link>
+        <Link to="/messages">Messages</Link>
+      </nav>
+
+      <div
+        className="relative"
+        ref={menuRef}
+        onClick={() => setMenuOpen((prev) => !prev)}
+      >
+        <button className="flex items-center focus:outline-none">
           <img
             src={avatarSrc}
             alt="User Avatar"
@@ -40,7 +50,7 @@ const Header = ({user}) => {
         </button>
 
         {menuOpen && (
-          <div className="absolute mt-2 w-40 bg-white text-black rounded shadow-md z-50">
+          <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded shadow-md z-50">
             {user ? (
               <>
                 <Link
@@ -72,12 +82,6 @@ const Header = ({user}) => {
           </div>
         )}
       </div>
-
-      {/* Navigation */}
-      <nav className="flex gap-8 text-lg font-semibold">
-        <Link to="/">Home</Link>
-        <Link to="/messages">Messages</Link>
-      </nav>
     </header>
   );
 };

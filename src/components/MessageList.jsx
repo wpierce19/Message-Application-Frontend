@@ -1,7 +1,7 @@
 //Will ask the backend to send all messages that the user has created/ participated in
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchUserMessages, markMessageAsRead } from "./services/messageService";
+import { fetchUserMessages, markMessageAsRead } from "./services/messageService.js";
 
 //Help to extract first sentence
 const getFirstSentence = (text) => {

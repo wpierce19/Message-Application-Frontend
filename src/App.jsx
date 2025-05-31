@@ -1,12 +1,15 @@
 import { Route, Routes, Link, Navigate, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import './App.cs';
+import { Toaster } from 'react-hot-toast';
+import './App.css';
 
-import Login from './components/UserLogin';
-import Signup from './components/UserSignUp';
-import MessageList from './components/MessageList';
-import Messages from './components/Messages';
-import CreateMessage from './components/CreateMessage';
+import Header from "./components/Header.jsx"
+import Login from './components/UserLogin.jsx';
+import Signup from './components/UserSignUp.jsx';
+import MessageList from './components/MessageList.jsx';
+import Messages from './components/Messages.jsx';
+import CreateMessage from './components/CreateMessage.jsx';
+import LandingPage from "./components/LandingPage.jsx";
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -19,14 +22,15 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Toaster />
       <Header user={user} setUser={setUser} setToken={setToken} />
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/messages" /> : <Navigate to="/login" />} />
+        <Route path="/" element={user ? <Home user={user} /> : <LandingPage />} />
         <Route path="/login" element={<Login setUser={setUser} setToken={setToken} />} />
         <Route path="/register" element={<Signup setUser={setUser} setToken={setToken} />} />
         <Route path="/messages" element={user ? <MessageList /> : <Navigate to="/login" />} />
-        <Route path="/messages/:id" element={<Messages user={user} />} />
-        <Route path="/messages/new" element={<CreateMessage user={user} />} />
+        <Route path="/messages/new" element={user ? <CreateMessage /> : <Navigate to="/login" />} />
+        <Route path="/messages/:id" element={user ? <Messages user={user} /> : <Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );

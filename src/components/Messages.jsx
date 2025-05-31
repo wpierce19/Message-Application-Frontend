@@ -1,7 +1,7 @@
 //Will be the main hub for anything messages
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { secureFetch } from "./utils/secureFetch";
+import { secureFetch } from "./utils/secureFetch.js";
 import { MDXEditor } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 
