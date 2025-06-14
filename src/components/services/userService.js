@@ -13,15 +13,14 @@ export const uploadAvatar = async (file) => {
   const formData = new FormData();
   formData.append("avatar", file);
 
-  return secureFetch("https://message-api-yidf.onrender.com/avatar", {
+  return secureFetch("https://message-api-yidf.onrender.com/profile/avatar", {
     method: "POST",
     body: formData,
-    // Do NOT set Content-Type; browser handles FormData boundary
   });
 };
 
 export const searchUsers = (query) =>
-  secureFetch(`/api/users?search=${encodeURIComponent(query)}`);
+  secureFetch(`https://message-api-yidf.onrender.com/users?search=${encodeURIComponent(query)}`);
 
 export const addFriend = (id) =>
-  secureFetch(`/api/friends/${id}`, { method: "POST" });
+  secureFetch(`https://message-api-yidf.onrender.com/friends/${id}`, { method: "POST" });
