@@ -28,6 +28,7 @@ function App() {
       <Header user={user} setUser={setUser} setToken={setToken} />
       <Routes>
         <Route path="/" element={user ? <Home user={user} /> : <LandingPage />} />
+        <Route path="/home" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login setUser={setUser} setToken={setToken} />} />
         <Route path="/register" element={<Signup setUser={setUser} setToken={setToken} />} />
         <Route path="/messages" element={user ? <MessageList /> : <Navigate to="/login" />} />

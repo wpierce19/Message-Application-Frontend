@@ -12,7 +12,13 @@ const Profile = () => {
 
   useEffect(() => {
     fetchUser()
-      .then(setUser)
+      .then((userData) => {
+        setUser(userData);
+        setForm({
+          bio: userData.bio || "",
+          interests: userData.interests?.join(", ") || "",
+        });
+      })
       .catch((err) => console.error("Failed to load user:", err));
   }, []);
 
@@ -46,13 +52,17 @@ const Profile = () => {
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover"
         />
-        <input type="file" onChange={handleAvatarUpload} />
+        <label className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+          Choose File
+          <input type="file" className="hidden" onChange={handleAvatarUpload} />
+        </label>
       </div>
 
       {editing ? (
         <>
           <textarea
             className="w-full mt-4 p-2 border"
+            placeholder="Bio"
             value={form.bio}
             onChange={(e) => setForm({ ...form, bio: e.target.value })}
           />
@@ -71,7 +81,7 @@ const Profile = () => {
         </>
       ) : (
         <>
-          <p className="mt-4 text-gray-700">{user.bio}</p>
+          <p className="mt-2 text-gray-700">{user.bio}</p>
           <p className="mt-2 text-gray-600">
             Interests: {user.interests.join(", ")}
           </p>
@@ -95,3 +105,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
