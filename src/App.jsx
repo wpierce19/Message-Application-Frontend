@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
 
-import Header from "./components/Header.jsx"
+import Header from "./components/Header.jsx";
+import Home from "./components/Home.jsx";
 import Login from './components/UserLogin.jsx';
 import Signup from './components/UserSignUp.jsx';
 import MessageList from './components/MessageList.jsx';
