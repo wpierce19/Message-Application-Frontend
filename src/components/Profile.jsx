@@ -32,17 +32,18 @@ const Profile = () => {
     }
   };
 
-  const handleAvatarUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+const handleAvatarUpload = async (e) => {
+  const file = e.target.files[0];
+  console.log("Selected file:", file); //debug
+  if (!file) return;
 
-    try {
-      const { avatarUrl } = await uploadAvatar(file);
-      setUser((prev) => ({ ...prev, avatarUrl }));
-    } catch (err) {
-      console.error("Error uploading avatar:", err);
-    }
-  };
+  try {
+    const { avatarUrl } = await uploadAvatar(file);
+    setUser((prev) => ({ ...prev, avatarUrl }));
+  } catch (err) {
+    console.error("Error uploading avatar:", err);
+  }
+};
 
   return user ? (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
