@@ -3,7 +3,7 @@ import {
   fetchUser,
   updateProfile,
   uploadAvatar,
-} from "../services/userService.js";
+} from "./services/userService";
 
 const Profile = () => {
   const [user, setUser] = useState(null);

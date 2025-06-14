@@ -1,6 +1,6 @@
 import { secureFetch } from "../utils/secureFetch";
 
-export const fetchUser = () => secureFetch("/api/me");
+export const fetchUser = () => secureFetch("https://message-api-yidf.onrender.com/auth/me");
 
 export const updateProfile = (form) =>
   secureFetch("/api/profile", {
