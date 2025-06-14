@@ -14,7 +14,7 @@ const Messages = ({user}) => {
     const [editingText, setEditingText] = useState("");
 
     useEffect(() => {
-        secureFetch(`/api/messages/${id}`)
+        secureFetch(`https://message-api-yidf.onrender.com/messages/${id}`)
         .then((data) => {
             setMessage(data.message);
             setThread(data.thread);
@@ -25,7 +25,7 @@ const Messages = ({user}) => {
     const handleSend = async () => {
         if (!newComment.trim()) return;
         try {
-            const response = await secureFetch(`/api/message/${id}/reply`, {
+            const response = await secureFetch(`https://message-api-yidf.onrender.com/message/${id}/reply`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({content: newComment}),
@@ -39,7 +39,7 @@ const Messages = ({user}) => {
 
     const handleEdit = async (msgId) => {
         try {
-            const response = await secureFetch(`/api/messages/${id}/edit/${msgId}`, {
+            const response = await secureFetch(`https://message-api-yidf.onrender.com/messages/${id}/edit/${msgId}`, {
                 method: "PATCH",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({content: editingText}),
@@ -55,7 +55,7 @@ const Messages = ({user}) => {
     const handleDelete = async (msgId) => {
         if (!window.confirm("Are you sure you want to delete this message?")) return;
         try {
-            await secureFetch(`/api/messages/${id}/delete/${msgId}`, {
+            await secureFetch(`https://message-api-yidf.onrender.com/messages/${id}/delete/${msgId}`, {
                 method: "DELETE"
             });
             setThread(thread.filter((msg) => msg.id !== msgId));
@@ -66,7 +66,7 @@ const Messages = ({user}) => {
 
     const handleReact = async (msgId, emoji) => {
         try {
-            const updated = await secureFetch(`/api/messages/${id}/react/${msgId}`, {
+            const updated = await secureFetch(`https://message-api-yidf.onrender.com/messages/${id}/react/${msgId}`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({emoji}),

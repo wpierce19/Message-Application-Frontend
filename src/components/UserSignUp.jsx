@@ -23,7 +23,7 @@ const Signup = ({setUser, setToken}) => {
             return;
         }
         try {
-            const response = await fetch("INSERT ENPOINT/signup", {
+            const response = await fetch("https://message-api-yidf.onrender.com/auth/signup", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -43,7 +43,7 @@ const Signup = ({setUser, setToken}) => {
             const token = data.token;
 
             //Automatically login after signup 
-            const userResponse = await fetch("INSERT USER ENPOINT", {
+            const userResponse = await fetch("https://message-api-yidf.onrender.com/auth/me", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

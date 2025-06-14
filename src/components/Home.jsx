@@ -17,12 +17,12 @@ const Home = ({user}) => {
         .then((msgs) => setRecentMessages(msgs.slice(0, 5)))
         .catch((err) => console.error("Failed to load messages:", err));
 
-        secureFetch("/api/friends")
+        secureFetch("https://message-api-yidf.onrender.com/friends")
         .then((response) => response.json())
         .then(setPendingRequests)
         .catch((err) => console.error("Failed to load friend requests:", err));
 
-        secureFetch("/api/friends/requests")
+        secureFetch("https://message-api-yidf.onrender.com/friends/requests")
         .then((response) => response.json())
         .catch((err) => console.error("Failed to load friend requests:", err));
     }, []);
@@ -30,7 +30,7 @@ const Home = ({user}) => {
     const searchFriends = async (query) => {
         if (!query) return setFriendSuggestions([]);
         try {
-            const response = await secureFetch(`/api/users/search?q=${encodeURIComponent(query)}`);
+            const response = await secureFetch(`https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`);
             const data = await response.json();
             setFriendSuggestions(data);
         } catch (err) {
@@ -40,7 +40,7 @@ const Home = ({user}) => {
 
     const handleAddFriend = async(userId) => {
         try {
-            await secureFetch(`/api/friends/request/${userId}`, {method: "POST"});
+            await secureFetch(`https://message-api-yidf.onrender.com/friends/request/${userId}`, {method: "POST"});
             setFriendSearch("");
             setFriendSuggestions([]);
             toast.success("Friend request sent");
@@ -52,7 +52,7 @@ const Home = ({user}) => {
 
     const handleRemoveFriend = async (userId) => {
         try {
-            await secureFetch(`/api/friends/${userId}`, {method: "DELETE"});
+            await secureFetch(`https://message-api-yidf.onrender.com/friends/${userId}`, {method: "DELETE"});
             setFriends(friends.filter((f) => f.id !== userId));
             toast.success("Friend removed");
         } catch (err) {
@@ -63,7 +63,7 @@ const Home = ({user}) => {
 
     const handleAcceptRequest = async (userId) => {
         try {
-            await secureFetch(`/api/friends/accept/${userId}`, {method: "POST"});
+            await secureFetch(`https://message-api-yidf.onrender.com/friends/accept/${userId}`, {method: "POST"});
             setFriends([...friends, pendingRequests.find((r) => r.id === userId)]);
             setPendingRequests(pendingRequests.filter((r) => r.id !== userId));
             toast.success("Friend request accepted");
@@ -75,7 +75,7 @@ const Home = ({user}) => {
 
     const handleDenyRequest = async (userId) => {
         try {
-            await secureFetch(`/api/friends/deny/${userId}`, {method: "POST"});
+            await secureFetch(`https://message-api-yidf.onrender.com/friends/deny/${userId}`, {method: "POST"});
             setPendingRequests(pendingRequests.filter((r) => r.id !== userId));
             toast("Request denied", {icon: "❌"});
         } catch (err) {

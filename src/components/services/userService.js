@@ -13,7 +13,7 @@ export const uploadAvatar = async (file) => {
   const formData = new FormData();
   formData.append("avatar", file);
 
-  return secureFetch("/api/avatar", {
+  return secureFetch("https://message-api-yidf.onrender.com/avatar", {
     method: "POST",
     body: formData,
     // Do NOT set Content-Type; browser handles FormData boundary

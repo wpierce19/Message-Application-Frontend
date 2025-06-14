@@ -15,7 +15,7 @@ const Login = ({setUser, setToken}) => {
         setIsSubmitting(true);
         try {
             const response = await fetch (
-                `INSERT ENDPOINT/login`,
+                `https://message-api-yidf.onrender.com/auth/login`,
                 {
                     method: "POST",
                     headers: {
@@ -33,7 +33,7 @@ const Login = ({setUser, setToken}) => {
             }
             const data = await response.json();
             try {
-                const userResponse = await fetch(`INSERT USER ENDPOINT`, {
+                const userResponse = await fetch(`https://message-api-yidf.onrender.com/auth/me`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

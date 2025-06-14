@@ -20,7 +20,7 @@ const CreateMessage = () => {
     const searchUsers = async (query) => {
         if (!query) return setSuggestions([]);
         try {
-            const response = await secureFetch(`/api/users/search?q=${encodeURIComponent(query)}`);
+            const response = await secureFetch(`https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`);
             const data = await response.json();
             setSuggestions(data);
         } catch (err) {
@@ -43,7 +43,7 @@ const handleSubmit = async () => {
       if (attachment) formData.append("attachment", attachment);
 
       setIsSubmitting(true);
-      await secureFetch("/api/messages", {
+      await secureFetch("https://message-api-yidf.onrender.com/messages", {
         method: "POST",
         body: formData,
       });
