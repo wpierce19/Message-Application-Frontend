@@ -11,6 +11,7 @@ import MessageList from './components/MessageList.jsx';
 import Messages from './components/Messages.jsx';
 import CreateMessage from './components/CreateMessage.jsx';
 import LandingPage from "./components/LandingPage.jsx";
+import ProfilePage from "./components/Profile.jsx";
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -32,6 +33,7 @@ function App() {
         <Route path="/messages" element={user ? <MessageList /> : <Navigate to="/login" />} />
         <Route path="/messages/new" element={user ? <CreateMessage /> : <Navigate to="/login" />} />
         <Route path="/messages/:id" element={user ? <Messages user={user} /> : <Navigate to="/login" />} />
+        <Route path="/profile" element={user ? <ProfilePage user={user} /> : <Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );
