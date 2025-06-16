@@ -32,18 +32,17 @@ const Profile = () => {
     }
   };
 
-const handleAvatarUpload = async (e) => {
-  const file = e.target.files[0];
-  console.log("Selected file:", file); //debug
-  if (!file) return;
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  try {
-    const { avatarUrl } = await uploadAvatar(file);
-    setUser((prev) => ({ ...prev, avatarUrl }));
-  } catch (err) {
-    console.error("Error uploading avatar:", err);
-  }
-};
+    try {
+      const { avatarUrl } = await uploadAvatar(file);
+      setUser((prev) => ({ ...prev, avatarUrl }));
+    } catch (err) {
+      console.error("Error uploading avatar:", err);
+    }
+  };
 
   return user ? (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
@@ -82,6 +81,7 @@ const handleAvatarUpload = async (e) => {
         </>
       ) : (
         <>
+          <p className="mt-2 text-xl font-semibold text-gray-800">@{user.username}</p>
           <p className="mt-2 text-gray-700">{user.bio}</p>
           <p className="mt-2 text-gray-600">
             Interests: {user.interests.join(", ")}
@@ -106,4 +106,5 @@ const handleAvatarUpload = async (e) => {
 };
 
 export default Profile;
+
 

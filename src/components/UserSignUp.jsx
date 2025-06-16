@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Signup = ({setUser, setToken}) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [signupData, setSignupData] = useState({
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -27,6 +28,7 @@ const Signup = ({setUser, setToken}) => {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
+                    username: signupData.username,
                     email: signupData.email,
                     password: signupData.password,
                 }),
@@ -74,6 +76,21 @@ const Signup = ({setUser, setToken}) => {
                 <h2 className="text-2x1 font-bold text-center mb-6">Sign Up</h2>
 
                 <form onSubmit={handleSignup}>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 mb-1" htmlFor="username">
+                            Username
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={signupData.username}
+                            onChange={(e) =>
+                            setSignupData({ ...signupData, username: e.target.value })
+                            }
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-1" htmlFor="email">
                             Email
