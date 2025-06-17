@@ -34,10 +34,11 @@ const Profile = () => {
   };
 
   const handleAvatarUpload = async (e) => {
-    console.log("File uploading initiated:", file);
     const file = e.target.files[0];
     if (!file) return;
 
+    console.log("File uploading initiated:", file);
+    
     try {
       const { avatarUrl } = await uploadAvatar(file);
       setUser((prev) => ({ ...prev, avatarUrl }));
@@ -50,7 +51,7 @@ const Profile = () => {
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
       <div className="flex items-center gap-4">
         <img
-          src={user.avatarUrl || "/assets/default-avatar.png"}
+          src={user.avatarUrl || "./assets/default-avatar.png"}
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover"
         />
@@ -59,8 +60,6 @@ const Profile = () => {
           <input type="file" className="hidden" onChange={handleAvatarUpload} />
         </label>
       </div>
-
-      <h2 className="mt-4 text-xl font-semibold text-gray-800">@{user.username}</h2>
 
       {editing ? (
         <>
@@ -85,6 +84,7 @@ const Profile = () => {
         </>
       ) : (
         <>
+          <h2 className="mt-4 text-xl font-semibold text-gray-800">@{user.username}</h2>
           <p className="mt-2 text-gray-700">{user.bio}</p>
           <p className="mt-2 text-gray-600">
             Interests: {user.interests.join(", ")}
