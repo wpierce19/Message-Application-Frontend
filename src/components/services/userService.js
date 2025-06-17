@@ -10,6 +10,7 @@ export const updateProfile = (form) =>
   });
 
 export const uploadAvatar = async (file) => {
+  console.log("userService function uploadAvatar initiated.");
   const formData = new FormData();
   formData.append("avatar", file);
 

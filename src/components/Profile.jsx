@@ -15,6 +15,7 @@ const Profile = () => {
       .then((userData) => {
         setUser(userData);
         setForm({
+          username: userData.username || "",
           bio: userData.bio || "",
           interests: userData.interests?.join(", ") || "",
         });
