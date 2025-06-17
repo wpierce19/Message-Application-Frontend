@@ -33,6 +33,7 @@ const Profile = () => {
   };
 
   const handleAvatarUpload = async (e) => {
+    console.log("File uploading initiated:", file);
     const file = e.target.files[0];
     if (!file) return;
 
