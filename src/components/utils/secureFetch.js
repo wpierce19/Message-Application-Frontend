@@ -1,21 +1,20 @@
 import { authHeader } from "./authHeader";
 
-export const secureFetch = async  (url, options = {}) => {
+export const secureFetch = async (url, options = {}) => {
     try {
         const headers = {
-            ...authHeader(),
-            ...authHeader(options.headers || {}),
+            ...authHeader(),               // inject Authorization header
+            ...(options.headers || {}),   // merge with user-provided headers
         };
 
-        const response = await fetch(url, {...options, headers});
+        const response = await fetch(url, { ...options, headers });
 
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
         }
 
-        //try parsing JSON; fallback if empty
-        const contentType = response.headers.get("Content-type");
+        const contentType = response.headers.get("Content-Type");
         if (contentType && contentType.includes("application/json")) {
             return await response.json();
         } else {
@@ -23,6 +22,6 @@ export const secureFetch = async  (url, options = {}) => {
         }
     } catch (err) {
         console.error(`secureFetch error -> ${url}`, err);
-        throw err; //Let the catch caller handle it
+        throw err;
     }
 };
