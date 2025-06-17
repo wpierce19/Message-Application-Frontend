@@ -3,7 +3,7 @@ import { secureFetch } from "../utils/secureFetch";
 export const fetchUser = () => secureFetch("https://message-api-yidf.onrender.com/auth/me");
 
 export const updateProfile = (form) =>
-  secureFetch("https://message-api-yidf.onrender.com/profile/", {
+  secureFetch("https://message-api-yidf.onrender.com/profile", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(form),
