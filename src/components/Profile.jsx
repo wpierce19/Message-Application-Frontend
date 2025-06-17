@@ -3,7 +3,7 @@ import {
   fetchUser,
   updateProfile,
   uploadAvatar,
-} from "./services/userService";
+} from "../services/userService";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -58,6 +58,8 @@ const Profile = () => {
         </label>
       </div>
 
+      <h2 className="mt-4 text-xl font-semibold text-gray-800">@{user.username}</h2>
+
       {editing ? (
         <>
           <textarea
@@ -81,7 +83,6 @@ const Profile = () => {
         </>
       ) : (
         <>
-          <p className="mt-2 text-xl font-semibold text-gray-800">@{user.username}</p>
           <p className="mt-2 text-gray-700">{user.bio}</p>
           <p className="mt-2 text-gray-600">
             Interests: {user.interests.join(", ")}
@@ -106,5 +107,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-
