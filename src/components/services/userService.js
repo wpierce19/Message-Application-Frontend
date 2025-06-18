@@ -25,3 +25,16 @@ export const searchUsers = (query) =>
 
 export const addFriend = (id) =>
   secureFetch(`https://message-api-yidf.onrender.com/friends/${id}`, { method: "POST" });
+
+export const refreshUserData = async () => {
+  const res = await fetch("https://message-api-yidf.onrender.com/auth/me", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to refresh user data");
+  const user = await res.json();
+  localStorage.setItem("user", JSON.stringify(user));
+  return user;
+};

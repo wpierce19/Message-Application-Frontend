@@ -1,6 +1,7 @@
 import { Route, Routes, Link, Navigate, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { refreshUserData } from './components/services/userService.js';
 import './App.css';
 
 import Header from "./components/Header.jsx";
@@ -21,6 +22,15 @@ function App() {
     if (user) localStorage.setItem("user", JSON.stringify(user));
     if (token) localStorage.setItem("jwt_token", token);
   }, [user,token]);
+
+  useEffect(() => {
+  const token = localStorage.getItem("jwt_token");
+  if (token) {
+    refreshUserData()
+      .then((user) => setUser(user))
+      .catch((err) => console.error("Failed to refresh user:", err));
+  }
+}, []);
 
   return (
     <BrowserRouter>

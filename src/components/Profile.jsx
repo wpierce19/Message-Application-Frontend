@@ -4,6 +4,7 @@ import {
   updateProfile,
   uploadAvatar,
 } from "./services/userService";
+import defaultAvatar from "../assets/default-avatar.png";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -18,6 +19,7 @@ const Profile = () => {
           username: userData.username || "",
           bio: userData.bio || "",
           interests: userData.interests?.join(", ") || "",
+          avatarUrl: userData.avatarUrl || defaultAvatar,
         });
       })
       .catch((err) => console.error("Failed to load user:", err));
@@ -38,7 +40,7 @@ const Profile = () => {
     if (!file) return;
 
     console.log("File uploading initiated:", file);
-    
+
     try {
       const { avatarUrl } = await uploadAvatar(file);
       setUser((prev) => ({ ...prev, avatarUrl }));
@@ -51,12 +53,18 @@ const Profile = () => {
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
       <div className="flex items-center gap-4">
         <img
-          src={user.avatarUrl || "./assets/default-avatar.png"}
+          src={
+            user.avatarUrl
+              ? (user.avatarUrl.startsWith("http")
+                  ? user.avatarUrl
+                  : `https://message-api-yidf.onrender.com${user.avatarUrl}`)
+              : defaultAvatar
+          }
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover"
         />
         <label className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
-          Choose File
+          Choose Image
           <input type="file" className="hidden" onChange={handleAvatarUpload} />
         </label>
       </div>
@@ -90,7 +98,7 @@ const Profile = () => {
             Interests: {user.interests.join(", ")}
           </p>
           <button
-            className="mt-2 text-blue-600"
+            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-300"
             onClick={() =>
               setForm({
                 bio: user.bio || "",

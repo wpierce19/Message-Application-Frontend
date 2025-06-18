@@ -17,17 +17,16 @@ const CreateMessage = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const searchUsers = async (query) => {
-        if (!query) return setSuggestions([]);
-        try {
-            const response = await secureFetch(`https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`);
-            const data = await response.json();
-            setSuggestions(data);
-        } catch (err) {
-            setIsSubmitting(false);
-            console.error("User search failed:", err);
-        }
-    };
+const searchUsers = async (query) => {
+  if (!query) return setSuggestions([]);
+  try {
+    const data = await secureFetch(`https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`);
+    setSuggestions(data);
+  } catch (err) {
+    setIsSubmitting(false);
+    console.error("User search failed:", err);
+  }
+};
 
 const handleSubmit = async () => {
     if (!recipient || !subject || !content) {

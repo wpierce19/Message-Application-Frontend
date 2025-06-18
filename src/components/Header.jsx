@@ -1,30 +1,40 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import defaultAvatar from "../assets/default-avatar.png";
 
-const Header = ({user, setUser, setToken}) => {
-    const [menuOpen, setMenuOpen] = useState(false);
-    const menuRef = useRef(null); //reference to dropdown area
+const Header = ({ user, setUser, setToken }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
-    const handleLogout = () => {
-        localStorage.removeItem("jwt_token");
-        localStorage.removeItem("user");
-        setUser(null);
-        setToken(null);
-        console.log("User Logged out");
+  const handleLogout = () => {
+    localStorage.removeItem("jwt_token");
+    localStorage.removeItem("user");
+    setUser(null);
+    setToken(null);
+    console.log("User Logged out");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
     };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-    const avatarSrc = user?.avatarUrl || "../assets/default-avatar.png";
+  // ✅ Debug user info
+  useEffect(() => {
+    console.log("Header user object:", user);
+  }, [user]);
 
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (menuRef.current && !menuRef.current.contains(e.target)){
-                setMenuOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside); 
-    })
+  // ✅ Safe avatar fallback
+  const avatarSrc = user?.avatarUrl
+    ? user.avatarUrl.startsWith("http")
+      ? user.avatarUrl
+      : `https://message-api-yidf.onrender.com${user.avatarUrl}`
+    : defaultAvatar;
 
   return (
     <header
@@ -45,7 +55,7 @@ const Header = ({user, setUser, setToken}) => {
           <img
             src={avatarSrc}
             alt="User Avatar"
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10 rounded-full object-cover border border-white"
           />
         </button>
 
