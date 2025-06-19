@@ -20,6 +20,10 @@ export const uploadAvatar = async (file) => {
   });
 };
 
+export const fetchPublicProfile = async (id) => {
+  return secureFetch(`https://message-api-yidf.onrender.com/profile/${id}`);
+}
+
 export const searchUsers = (query) =>
   secureFetch(`https://message-api-yidf.onrender.com/users?search=${encodeURIComponent(query)}`);
 

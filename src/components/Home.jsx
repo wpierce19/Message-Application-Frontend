@@ -18,12 +18,11 @@ const Home = ({user}) => {
         .catch((err) => console.error("Failed to load messages:", err));
 
         secureFetch("https://message-api-yidf.onrender.com/friends")
-        .then((response) => response.json())
-        .then(setPendingRequests)
-        .catch((err) => console.error("Failed to load friend requests:", err));
+        .then(setFriends)
+        .catch((err) => console.error("Failed to load friends:", err));
 
         secureFetch("https://message-api-yidf.onrender.com/friends/requests")
-        .then((response) => response.json())
+        .then(setPendingRequests)
         .catch((err) => console.error("Failed to load friend requests:", err));
     }, []);
 
@@ -31,8 +30,7 @@ const Home = ({user}) => {
         if (!query) return setFriendSuggestions([]);
         try {
             const response = await secureFetch(`https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`);
-            const data = await response.json();
-            setFriendSuggestions(data);
+            setFriendSuggestions(response);
         } catch (err) {
             console.error("Failed to search users:", err);
         }
@@ -87,7 +85,7 @@ const Home = ({user}) => {
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name || "Friend"} 👋</h1>
+        <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.username || "Friend"} 👋</h1>
         <p className="text-gray-600">Here’s what’s happening in your inbox:</p>
       </div>
 
@@ -129,20 +127,40 @@ const Home = ({user}) => {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-3">Your Friends</h2>
-        <ul className="space-y-1 mb-3">
-          {friends.map((f) => (
-            <li key={f.id} className="text-gray-800 flex justify-between items-center">
-              <span>{f.name} ({f.email})</span>
-              <button
-                onClick={() => handleRemoveFriend(f.id)}
-                className="text-sm text-red-600 hover:underline"
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Your Friends</h2>
+          {friends.length === 0 ? (
+            <p className="text-gray-600">No friends yet.</p>
+          ) : (
+            <ul className="space-y-3">
+              {friends.map((friend) => (
+                <li
+                  key={friend.id}
+                  className="flex justify-between items-center p-3 bg-white rounded shadow"
+                >
+                  <div>
+                    <p className="text-lg font-medium">@{friend.username}</p>
+                    <p className="text-sm text-gray-600">{friend.email}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => window.location.href = `/profile/${friend.id}`}
+                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                    >
+                      View Profile
+                    </button>
+                    <button
+                      onClick={() => handleRemoveFriend(friend.id)}
+                      className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <input
           type="text"

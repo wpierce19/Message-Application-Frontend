@@ -16,10 +16,11 @@ export const secureFetch = async (url, options = {}) => {
 
         const contentType = response.headers.get("Content-Type");
         if (contentType && contentType.includes("application/json")) {
-            return await response.json();
-        } else {
-            return response;
+        const raw = await response.text();
+        console.log("✅ Raw JSON text from server:", raw);
+        return JSON.parse(raw);
         }
+
     } catch (err) {
         console.error(`secureFetch error -> ${url}`, err);
         throw err;

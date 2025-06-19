@@ -1,42 +1,42 @@
-//Will have the functionality to send new messages to the backend for saving
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { secureFetch } from "./utils/secureFetch";
 import { MDXEditor } from "@mdxeditor/editor";
-import "@mdxeditor/editor/style.css";
 
 const CreateMessage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [content, setContent] = useState("");
+  const [recipient, setRecipient] = useState("");
+  const [recipientId, setRecipientId] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [attachment, setAttachment] = useState(null);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [subject, setSubject] = useState("");
-    const [content, setContent] = useState("");
-    const [recipient, setRecipient] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
-    const [attachment, setAttachment] = useState(null);
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
+  const searchUsers = async (query) => {
+    if (!query) return setSuggestions([]);
+    try {
+      const data = await secureFetch(
+        `https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`
+      );
+      setSuggestions(data);
+    } catch (err) {
+      setIsSubmitting(false);
+      console.error("User search failed:", err);
+    }
+  };
 
-const searchUsers = async (query) => {
-  if (!query) return setSuggestions([]);
-  try {
-    const data = await secureFetch(`https://message-api-yidf.onrender.com/users/search?q=${encodeURIComponent(query)}`);
-    setSuggestions(data);
-  } catch (err) {
-    setIsSubmitting(false);
-    console.error("User search failed:", err);
-  }
-};
-
-const handleSubmit = async () => {
-    if (!recipient || !subject || !content) {
+  const handleSubmit = async () => {
+    if (!recipientId || !subject || !content) {
       setError("All fields are required.");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append("recipient", recipient);
+      formData.append("recipientId", recipientId);
       formData.append("subject", subject);
       formData.append("content", content);
       if (attachment) formData.append("attachment", attachment);
@@ -46,6 +46,7 @@ const handleSubmit = async () => {
         method: "POST",
         body: formData,
       });
+      console.log("Sending message to recipientId:", recipientId);
       setSuccess(true);
       setTimeout(() => navigate("/messages"), 1000);
       navigate("/messages");
@@ -72,7 +73,7 @@ const handleSubmit = async () => {
           setRecipient(e.target.value);
           searchUsers(e.target.value);
         }}
-        placeholder="Search user by name or email"
+        placeholder="Search user by username or email"
       />
       {suggestions.length > 0 && (
         <ul className="border rounded bg-white shadow mb-4">
@@ -81,11 +82,12 @@ const handleSubmit = async () => {
               key={user.id}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => {
-                setRecipient(user.email);
+                setRecipient(user.username);
+                setRecipientId(user.id);
                 setSuggestions([]);
               }}
             >
-              {user.name} ({user.email})
+              {user.username} ({user.email})
             </li>
           ))}
         </ul>
@@ -115,7 +117,17 @@ const handleSubmit = async () => {
           const file = e.target.files[0];
           const maxSize = 5 * 1024 * 1024; // 5MB
 
-          if (file && !["application/pdf", "image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"].includes(file.type)) {
+          if (
+            file &&
+            ![
+              "application/pdf",
+              "image/png",
+              "image/jpeg",
+              "image/jpg",
+              "image/gif",
+              "image/webp",
+            ].includes(file.type)
+          ) {
             setError("Only PDF and image files are allowed.");
             setAttachment(null);
           } else if (file && file.size > maxSize) {
@@ -129,13 +141,17 @@ const handleSubmit = async () => {
         className="mb-4"
       />
       {attachment && (
-        <div className="text-sm text-gray-700 mb-2">Selected file: {attachment.name}</div>
+        <div className="text-sm text-gray-700 mb-2">
+          Selected file: {attachment.name}
+        </div>
       )}
 
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${
+          isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         Send Message
       </button>
