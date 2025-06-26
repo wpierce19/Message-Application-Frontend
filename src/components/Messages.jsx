@@ -73,9 +73,13 @@ const Messages = () => {
   };
 
   if (!message) return <p className="text-center mt-10">Loading message...</p>;
+  console.log(message.attachments.id);
 
   // Combine all comments
   const allComments = [...message.comments, ...thread];
+
+  message.attachments?.map((file) => {
+  console.log("Rendering file path:", file.path)});
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow h-[90vh] flex flex-col">
@@ -97,7 +101,38 @@ const Messages = () => {
           <span className="text-gray-500 text-sm">{message.sender?.email}</span>
         </div>
 
-        <div className="text-gray-800 border p-4 rounded">{message.content}</div>
+        <div className="text-gray-800 border p-4 rounded">{message.content}
+
+        {/* Display attachments */}
+        {message.attachments?.map((file) =>
+          file.mimetype.startsWith("image/") ? (
+            <img
+              key={file.id}
+              src={
+                file.path.startsWith("http")
+                  ? file.path
+                  : `https://message-api-yidf.onrender.com${file.path}`
+              }
+              alt={file.filename}
+              className="max-w-full h-auto mt-2 rounded border"
+            />
+          ) : (
+            <a
+              key={file.id}
+              href={
+                file.path.startsWith("http")
+                  ? file.path
+                  : `https://message-api-yidf.onrender.com${file.path}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline mt-2 block"
+            >
+              {file.filename}
+            </a>
+          )
+        )}
+      </div>
 
         {message.reactions?.length > 0 && (
           <div className="mt-2 text-sm text-gray-600">
