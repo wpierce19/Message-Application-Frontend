@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 import { fetchUserMessages, markMessageAsRead } from "./services/messageService.js";
-
-const getFirstSentence = (text) => {
-  const match = text.match(/(.*?[.!?])(\s|$)/);
-  return match ? match[1] : text;
-};
 
 const MessageList = () => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-useEffect(() => {
-  fetchUserMessages()
-    .then((res) => {
-      console.log("Fetched messages:", res); // ← Add this
-      if (Array.isArray(res)) {
-        const sorted = [...res].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setMessages(sorted);
-      } else {
-        throw new Error("Invalid response format");
-      }
-    })
-    .catch((err) => setError("Failed to load messages: " + err.message));
-}, []);
+  useEffect(() => {
+    fetchUserMessages()
+      .then((res) => {
+        if (Array.isArray(res)) {
+          const sorted = [...res].sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setMessages(sorted);
+        } else {
+          throw new Error("Invalid response format");
+        }
+      })
+      .catch((err) => setError("Failed to load messages: " + err.message));
+  }, []);
 
   const handleReadAndRedirect = async (msg) => {
     if (!msg.read) {
@@ -37,7 +34,6 @@ useEffect(() => {
         console.error("Failed to mark as read:", err);
       }
     }
-
     navigate(`/messages/${msg.id}`);
   };
 
@@ -67,7 +63,7 @@ useEffect(() => {
         {messages.map((msg) => {
           const isSender = msg.senderId === msg.currentUserId;
           const participant = isSender
-            ? msg.participants.find(p => p.id !== msg.currentUserId)
+            ? msg.participants.find((p) => p.id !== msg.currentUserId)
             : msg.sender;
 
           return (
@@ -84,7 +80,14 @@ useEffect(() => {
                   ({participant?.email || "No email"})
                 </span>
               </p>
-              <p className="text-gray-700">{getFirstSentence(msg.content)}</p>
+
+              {/* Properly render HTML content */}
+              <div
+                className="text-gray-700 mt-1 prose max-w-none"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(msg.content)
+                }}
+              />
 
               {!msg.read && (
                 <span className="inline-block mt-2 text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">
