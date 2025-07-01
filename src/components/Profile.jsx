@@ -39,7 +39,7 @@ const Profile = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    console.log("File uploading initiated:", file);
+    console.log("File uploading initiated:");
 
     try {
       const { avatarUrl } = await uploadAvatar(file);

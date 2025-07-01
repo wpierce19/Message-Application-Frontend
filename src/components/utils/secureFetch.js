@@ -17,7 +17,6 @@ export const secureFetch = async (url, options = {}) => {
         const contentType = response.headers.get("Content-Type");
         if (contentType && contentType.includes("application/json")) {
         const raw = await response.text();
-        console.log("✅ Raw JSON text from server:", raw);
         return JSON.parse(raw);
         }
 
