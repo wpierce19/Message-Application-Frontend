@@ -17,12 +17,16 @@ This is the **frontend** for the Dash Messaging App built with **React**, **Reac
 
 ---
 
+## 🖥️ Live Demo
+
+- [Live Preview](https://message-application-frontend.pages.dev)
+
 ## 🛠️ Tech Stack
 
-- **React 19**
+- **React**
 - **Tailwind CSS**
 - **React Router DOM**
-- **Quill 2.x**
+- **Quill 2**
 - **DOMPurify**
 - **Custom secureFetch wrapper**
 - **Deployed with Cloudflare Pages**
