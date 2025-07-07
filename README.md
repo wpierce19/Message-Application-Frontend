@@ -35,17 +35,21 @@ This is the **frontend** for the Dash Messaging App built with **React**, **Reac
 
 ## 📦 Installation
 
-1. **Clone the repository**:
+### 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/yourusername/message-frontend.git
+git clone https://github.com/wpierce19/message-frontend.git
 cd message-frontend
 ```
 
- 2. **Install Dependencies**
+ ### 2. **Install Dependencies**
  ```bash
  npm install
  ```
+
+ ### 3. Modify endpoint URL's to your backend
+ Endpoint URL's such as `await secureFetch("https://message-api-yidf.onrender.com/messages",`
+ You will have to replace `https://message-api-yidf.onrender.com` with your backend URL.
 
  ## 🧪 Development
  To start the frontend development server:
