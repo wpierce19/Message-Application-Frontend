@@ -54,13 +54,6 @@ cd message-frontend
  ```
  The app will be available at `http://localhost:5173`.
 
- ## 🔐 Environment Variables
- Create a .env file
- ```bash
- VITE_API_BASE_URL=https://message-api-yidf.onrender.com
- ```
- Update `secureFetch.js` accordingly to reference `import.meta.env.VITE_API_BASE_URL`.
-
  ## ✨ Rich Text Editor (Quill)
 
  - **Custom toolbar for headers, lists, code, images, etc.**
